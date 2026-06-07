@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,7 +62,7 @@ public class AuthController {
 	}
 	 
 	@GetMapping("/perfil")
-	public ResponseEntity<?> verPerfil(@RequestHeader(value = "Authorization", required = false) String authHeader) {
+	/* public ResponseEntity<?> verPerfil(@RequestHeader(value = "Authorization", required = false) String authHeader) {
 
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
 
@@ -83,6 +85,18 @@ public class AuthController {
 
 		return ResponseEntity.ok(Map.of("Mensaje", "Bienvenido al sistema protegido por jwt", "Usuario", usuario, "Rol",
 				rol, "Estatus", "Autenticado Exitosamente"));
+	}*/
+	public ResponseEntity<?> verPerfil() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		String usuario = auth.getName();
+
+		String rol = auth.getAuthorities().iterator().next().getAuthority();
+
+		return ResponseEntity.ok(Map.of("Mensaje", "Bienvenido al sistema protegido por Spring Security", 
+				"Usuario", usuario, 
+				"rol_detectado", rol, 
+				"status", "Autenticado Exitosamente"));
 	}
 
 	@PostMapping("/logout")
