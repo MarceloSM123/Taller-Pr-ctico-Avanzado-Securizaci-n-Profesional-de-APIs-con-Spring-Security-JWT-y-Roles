@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.krakedev.proyectos.entidades.Usuario;
 import com.krakedev.proyectos.repositories.UsuarioRepository;
 import com.krakedev.proyectos.security.JwtUtil;

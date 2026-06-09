@@ -13,7 +13,7 @@ public class Usuario {
 	 @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    @Column(name = "id")
-	    private Integer id;
+	    private Long id;
 
 	    @Column(name = "username", length = 50, nullable = false, unique = true)
 	    private String username;
@@ -34,12 +34,8 @@ public class Usuario {
 	    }
 
 
-	    public Integer getId() {
+	    public Long getId() {
 	        return id;
-	    }
-
-	    public void setId(Integer id) {
-	        this.id = id;
 	    }
 
 	    public String getUsername() {

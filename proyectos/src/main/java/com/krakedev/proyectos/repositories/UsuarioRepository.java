@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.krakedev.proyectos.entidades.Tarea;
 import com.krakedev.proyectos.entidades.Usuario;
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
+public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 	// Método para buscar un usuario por username
     Optional<Usuario> findByUsername(String username);
     

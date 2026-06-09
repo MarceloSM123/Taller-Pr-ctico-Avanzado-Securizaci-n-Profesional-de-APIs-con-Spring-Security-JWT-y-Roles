@@ -17,44 +17,49 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@Component  
+@Component
 // @Component crea una instancia de forma automatica al iniciar la aplicacion 
-public class JwtAuthenticationFilter extends OncePerRequestFilter{ // no crear como abstracta, hay que asegurarse de sobreescribir los metodos
-	//OncePerRequestFilter filtro que se ejecuta una vez por peticion
+public class JwtAuthenticationFilter extends OncePerRequestFilter { // no crear como abstracta, hay que asegurarse de
+																	// sobreescribir los metodos
+	// OncePerRequestFilter filtro que se ejecuta una vez por peticion
 	private final TokenBlackListService blackListService;
+
 // inyeccion por el contructor
 	public JwtAuthenticationFilter(TokenBlackListService blackListService) {
 		super();
 		this.blackListService = blackListService;
 	}
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    	String authHeder = request.getHeader("Authorization");
+	@Override
+	protected void doFilterInternal(HttpServletRequest request,
+			HttpServletResponse response /* lo que el servidor le devuelve al cliente */, FilterChain filterChain)
+			throws ServletException, IOException {
+		String authHeder = request.getHeader("Authorization");
 
-    	if(authHeder == null || !authHeder.startsWith("Bearer ")) {
-    	    filterChain.doFilter(request, response);
-    	}
+		if (authHeder == null || !authHeder.startsWith("Bearer ")) {
+			filterChain.doFilter(request, response);
+		}
 
-    	String token = authHeder.substring(7);
+		String token = authHeder.substring(7);
 
-    	if(blackListService.estaInvalidado(token)) {
-    	    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-    	    response.getWriter().write("Acceso denegado: Session Cerrada");
-    	    return;
-    	}
-    	
-    	DecodedJWT datosToken = JwtUtil.validarToken(token);
+		if (blackListService.estaInvalidado(token)) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.getWriter().write("Acceso denegado: Session Cerrada");
+			return;
+		}
 
-    	if (datosToken != null) {
-    	    String username = datosToken.getSubject();
-    	    String rolOriginal = datosToken.getClaim("rol").asString();
-    	    String rolSpring = "ROLE_" + rolOriginal;
-    	    SimpleGrantedAuthority authority = new SimpleGrantedAuthority(rolSpring);
-    	    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null, Collections.singleton(authority));
-    	    SecurityContextHolder.getContext().setAuthentication(authentication);
-    	    filterChain.doFilter(request, response);
-    	}
-    }
+		DecodedJWT datosToken = JwtUtil.validarToken(token);//
+
+		if (datosToken != null) {
+			String username = datosToken.getSubject();
+			String rolOriginal = datosToken.getClaim("rol").asString();
+			String rolSpring = "ROLE_" + rolOriginal;
+			SimpleGrantedAuthority authority = new SimpleGrantedAuthority(rolSpring);
+			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null,
+					Collections.singleton(authority));
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+		}
+		filterChain.doFilter(request, response);
+	}
 
 }

@@ -95,10 +95,5 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    /**
-     * Método para buscar un usuario por ID
-     */
-    public Optional<Usuario> buscarPorId(Integer id) {
-        return usuarioRepository.findById(id);
-    }
+
 }

@@ -8,14 +8,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration //anotacion que indica configuraciones importantes que deben ser analizadas al iniciar el sistema
-@EnableMethodSecurity //anotacion que activa la seguridad basada en metodos nos permite usar anotaciones SpringSecurity
+@Configuration 
+//anotacion que indica configuraciones importantes que deben ser analizadas al iniciar el sistema
+@EnableMethodSecurity 
+//anotacion que activa la seguridad basada en metodos nos permite usar anotaciones SpringSecurity
 public class SecurityConfig {
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
 
 	public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
-		//super();
+		super();
 		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
 	}
 
