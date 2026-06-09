@@ -15,7 +15,7 @@ public class SecurityConfig {
 
 
 	public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
-		super();
+		//super();
 		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
 	}
 
@@ -25,7 +25,7 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    return http.csrf(csrf -> csrf.disable()) // apagamos la cookies 
 	        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-	        .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/login", "/auth/registrar").permitAll()
+	        .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/login", "/api/auth/registrar").permitAll()
 	        .anyRequest().authenticated())
 	        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).build();
 	}
